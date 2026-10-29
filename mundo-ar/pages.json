@@ -1,0 +1,313 @@
+[
+ {
+  "chapter": "El mundo gira al revés",
+  "scene": "T_lineup",
+  "image": "image1.png",
+  "lines": [
+   "El mundo gira al revés"
+  ],
+  "aspect": 1.3006,
+  "target": "t0.jpg",
+  "layout": "arc"
+ },
+ {
+  "chapter": "Las trampas",
+  "scene": "A00_barra",
+  "image": "image2.png",
+  "lines": [
+   "Son trampas de la mente:",
+   "temerle a la muerte",
+   "y arriesgar menos que la última vez.",
+   "Me di cuenta una madrugada cualquiera,",
+   "en la barra, solo.",
+   "Y me reí."
+  ],
+  "aspect": 1.3006,
+  "target": "t1.jpg"
+ },
+ {
+  "chapter": "La reina",
+  "scene": "A02_reina",
+  "image": "image3.png",
+  "lines": [
+   "Se soltó el pelo",
+   "y la vi reinar",
+   "en la orilla del mar.",
+   "Antes de ser mi vieja, fue esa de la playa",
+   "que no le pedía permiso a nadie."
+  ],
+  "aspect": 1.3006,
+  "target": "t2.jpg"
+ },
+ {
+  "chapter": "La herencia",
+  "scene": "A03_maestra",
+  "image": "image4.png",
+  "lines": [
+   "Enseñaba Lengua en la secundaria.",
+   "Nadie corregía los de ella.",
+   "Apostaste tu vida entera",
+   "a que la mía saliera bien.",
+   "Y ganaste."
+  ],
+  "aspect": 1.3006,
+  "target": "t3.jpg"
+ },
+ {
+  "chapter": "Lo que les saqué",
+  "scene": "A05_poco",
+  "image": "image6.png",
+  "lines": [
+   "Les robaba.",
+   "A las dos únicas personas",
+   "que jamás me lo habrían negado.",
+   "Ellos, con poco y nada,",
+   "son mejores que yo."
+  ],
+  "aspect": 1.3006,
+  "target": "t4.jpg"
+ },
+ {
+  "chapter": "Con poco y nada",
+  "scene": "A04_amigo",
+  "image": "image7.png",
+  "lines": [
+   "Mi viejo laburaba dieciséis horas por día.",
+   "Nos agarrábamos fuerte.",
+   "—¿Hay café?",
+   "—Sí, recién hecho.",
+   "Y listo. Saldado."
+  ],
+  "aspect": 1.3006,
+  "target": "t5.jpg"
+ },
+ {
+  "chapter": "Los hermanos",
+  "scene": "A06_hermanos",
+  "image": "image8.png",
+  "lines": [
+   "Somos cuatro.",
+   "Tres varones y la más chica.",
+   "Puede pasar que no nos veamos en un mes,",
+   "pero juega Argentina y aparecemos todos.",
+   "La banda sigue."
+  ],
+  "aspect": 1.3006,
+  "target": "t6.jpg"
+ },
+ {
+  "chapter": "El fruto",
+  "scene": "A07_fruto",
+  "image": "image9.png",
+  "lines": [
+   "Hay que verla ahora.",
+   "Por primera vez en la vida, no hace nada. Solo mira.",
+   "La corona saltó una generación",
+   "y reapareció en un pibe de cuatro años."
+  ],
+  "aspect": 1.3006,
+  "target": "t7.jpg"
+ },
+ {
+  "chapter": "Lo que no alcanza",
+  "scene": "A08_noalcanza",
+  "image": "image11.png",
+  "lines": [
+   "Tengo laburo. En plural.",
+   "Y aun así, todos los meses:",
+   "no alcanza.",
+   "Lo que me sostiene",
+   "es lo mismo que me hunde.",
+   "¿Cómo estás, en serio?"
+  ],
+  "aspect": 1.3006,
+  "target": "t8.jpg"
+ },
+ {
+  "chapter": "Los fantasmas",
+  "scene": "A09_fantasmas",
+  "image": "image12.png",
+  "lines": [
+   "Fantasmas de juventud",
+   "se despiden de mí.",
+   "Fue hermoso, pero yo soy muy…",
+   "Y no pude terminarla."
+  ],
+  "aspect": 1.3006,
+  "target": "t9.jpg"
+ },
+ {
+  "chapter": "La cuenta",
+  "scene": "A10_cuenta",
+  "image": "image13.png",
+  "lines": [
+   "La derrota que mi alma no soportó,",
+   "igual la gané.",
+   "El que se baja antes no pierde menos. Pierde peor."
+  ],
+  "aspect": 1.3006,
+  "target": "t10.jpg"
+ },
+ {
+  "chapter": "La mano",
+  "scene": "A11_mano",
+  "image": "image14.png",
+  "lines": [
+   "Yo iba a ser médico. Cirujano.",
+   "Diez tendones. El nervio cubital.",
+   "La arteria.",
+   "Me salvó la mano un cirujano."
+  ],
+  "aspect": 1.3006,
+  "target": "t11.jpg"
+ },
+ {
+  "chapter": "Por qué cuesta separarse de una mala junta. Perdón.",
+  "scene": "A12_junta",
+  "image": "image15.png",
+  "lines": [
+   "Por qué cuesta separarse",
+   "de una mala junta.",
+   "La dejé. Tarde.",
+   "Fui de muchos amigos. Ellos no fueron míos.",
+   "Perdón, viejos. Tenían razón."
+  ],
+  "aspect": 1.3006,
+  "target": "t12.jpg"
+ },
+ {
+  "chapter": "El puente",
+  "scene": "A13_puente",
+  "image": "image18.png",
+  "lines": [
+   "Hay gente que estuvo poco",
+   "y no se va nunca.",
+   "Los ángeles más chiquitos no pesan.",
+   "Iluminan.",
+   "No les escribo para despedirlos. Los vi."
+  ],
+  "aspect": 1.3006,
+  "target": "t13.jpg"
+ },
+ {
+  "chapter": "Los que siguen",
+  "scene": "A14_siguen",
+  "image": "image19.png",
+  "lines": [
+   "Setenta años en este mundo",
+   "y nunca habían visto el mar.",
+   "Un hombre grande, curtido,",
+   "con los ojos de un chico de cinco años."
+  ],
+  "aspect": 1.3006,
+  "target": "t14.jpg"
+ },
+ {
+  "chapter": "Qué piñata ha explotado",
+  "scene": "A15_pinata",
+  "image": "image20.png",
+  "lines": [
+   "Qué piñata ha explotado,",
+   "hay regalos por todos lados."
+  ],
+  "aspect": 1.3006,
+  "target": "t15.jpg"
+ },
+ {
+  "chapter": "Ella",
+  "scene": "A16_ella",
+  "image": "image21.png",
+  "lines": [
+   "La elegí a ella.",
+   "Y ella me eligió a mí.",
+   "Abrazame,",
+   "que con eso me alcanza",
+   "para todo lo que no alcanza."
+  ],
+  "aspect": 1.3006,
+  "target": "t16.jpg"
+ },
+ {
+  "chapter": "Malay",
+  "scene": "A17_malay",
+  "image": "image22.png",
+  "lines": [
+   "Pensé en Mala.",
+   "Quedó Malay.",
+   "Ella eligió quedárselo.",
+   "Les dice «te amo» a todos."
+  ],
+  "aspect": 1.3006,
+  "target": "t17.jpg"
+ },
+ {
+  "chapter": "La luchadora",
+  "scene": "A18_luchadora",
+  "image": "image23.png",
+  "lines": [
+   "Malay tuvo neumonía.",
+   "Peleó.",
+   "Ganó.",
+   "Y al otro día entró al jardín como si nada.",
+   "Yo me quedé ahí y lloré",
+   "lo que ella no lloró."
+  ],
+  "aspect": 1.3006,
+  "target": "t18.jpg"
+ },
+ {
+  "chapter": "Cuando te duela",
+  "scene": "A20_viento",
+  "image": "image25.png",
+  "lines": [
+   "Hablé al viento",
+   "y el viento contestó.",
+   "Papá y mamá siempre van a estar.",
+   "Aunque no me veas.",
+   "Sobre todo cuando no me veas."
+  ],
+  "aspect": 1.3006,
+  "target": "t19.jpg"
+ },
+ {
+  "chapter": "Mi lugar",
+  "scene": "A22_milugar",
+  "image": "image27.png",
+  "lines": [
+   "San Juan es donde vivo",
+   "y donde me pienso morir.",
+   "Pero mi lugar en el mundo",
+   "es la orilla."
+  ],
+  "aspect": 1.3006,
+  "target": "t20.jpg"
+ },
+ {
+  "chapter": "Las ideas",
+  "scene": "A21_ideas",
+  "image": "image28.png",
+  "lines": [
+   "Tengo las ideas.",
+   "Tengo las manos.",
+   "Me falta la parte del medio.",
+   "Esperé años una señal. No llega.",
+   "Así que la pongo.",
+   "Fea, incompleta, sin saber. La pongo."
+  ],
+  "aspect": 1.3006,
+  "target": "t21.jpg"
+ },
+ {
+  "chapter": "La mejor flor",
+  "scene": "A23_flor",
+  "image": "image29.png",
+  "lines": [
+   "Tuve la sensación de ser la mejor flor.",
+   "Pero no es más que eso.",
+   "Éramos dos hablando al viento.",
+   "Y el viento, ya lo ves, contesta."
+  ],
+  "aspect": 1.3006,
+  "target": "t22.jpg"
+ }
+]

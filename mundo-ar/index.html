@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>El mundo gira al revés — RA</title>
+<style>
+@font-face{font-family:Barlow;font-weight:500;src:url(fonts/f1.ttf)}
+@font-face{font-family:Barlow;font-weight:700;src:url(fonts/f2.ttf)}
+@font-face{font-family:Lora;src:url(fonts/f3.ttf)}
+@font-face{font-family:Lora;font-style:italic;src:url(fonts/f4.ttf)}
+:root{--paper:#efe6d2;--ink:#2a2a2e;--red:#c8402f;--sea:#4f8a8b}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:var(--ink);color:var(--paper);font-family:Lora,Georgia,serif;overflow:hidden}
+#ar{position:fixed;inset:0}
+#intro{position:fixed;inset:0;z-index:20;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;text-align:center}
+#intro h1{font-family:Barlow,sans-serif;font-weight:500;letter-spacing:.04em;font-size:clamp(34px,10vw,64px);line-height:1;margin:0}
+#intro h1 span{display:block;color:var(--red)}
+#intro .sun{width:44px;height:44px;border-radius:50%;background:var(--red)}
+#intro p{font-size:18px;max-width:30ch;margin:0;line-height:1.4}
+#intro small{font-family:Barlow,sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:12px;opacity:.75}
+#intro a{color:var(--ink)}
+button,select{font-family:Barlow,sans-serif;font-weight:700;letter-spacing:.06em;font-size:20px;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:14px 34px;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+#cap{position:fixed;left:16px;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:10;text-align:center;pointer-events:none}
+#cap .box{display:inline-block;background:rgba(239,230,210,.94);color:var(--ink);border-radius:14px;padding:12px 18px;max-width:34ch}
+#cap .ch{font-family:Barlow,sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--red);margin-bottom:4px}
+#cap .ln{font-style:italic;font-size:17px;line-height:1.35}
+#pick{position:fixed;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:10;font-size:15px;padding:10px 18px;max-width:calc(100vw - 32px)}
+</style>
+<script type="importmap">
+{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/","mindar-image-three":"./vendor/mindar/mindar-image-three.prod.js"}}
+</script>
+</head><body>
+<div id="ar"></div>
+<div id="intro">
+  <div class="sun"></div>
+  <h1>EL MUNDO GIRA<span>AL REVÉS</span></h1>
+  <p>Apuntá el celular a la tapa o a una ilustración del libro y la escena de la película sale de la página.</p>
+  <button id="start" type="button">Empezar</button>
+  <small>Facundo Irrazábal · <a href="?preview">ver sin cámara</a></small>
+</div>
+<div id="cap" hidden><div class="box"><div class="ch" id="ch"></div><div class="ln" id="ln"></div></div></div>
+<select id="pick" hidden aria-label="Elegir capítulo"></select>
+<script type="module">
+import * as THREE from 'three';
+import { buildScene } from './scene.js';
+
+const pages = await (await fetch('pages.json')).json();
+const cap = document.getElementById('cap'), ch = document.getElementById('ch'), ln = document.getElementById('ln');
+const clock = new THREE.Clock();
+function caption(p, msg) {
+  cap.hidden = false;
+  ch.textContent = p ? p.chapter : '';
+  ln.textContent = p ? p.lines.slice(0, 3).join(' ') : msg;
+}
+
+async function startAR() {
+  const { MindARThree } = await import('mindar-image-three');
+  const mindar = new MindARThree({ container: document.getElementById('ar'), imageTargetSrc: 'targets.mind', maxTrack: 1, uiScanning: 'no', uiLoading: 'yes', filterMinCF: 0.0001, filterBeta: 0.001 });
+  const { renderer, scene, camera } = mindar;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  caption(null, 'Buscando una ilustración…');
+  const live = pages.map(() => ({ sc: null, loading: null, visible: false }));
+  pages.forEach((p, i) => {
+    const anchor = mindar.addAnchor(i), e = live[i];
+    anchor.onTargetFound = async () => {
+      e.visible = true; caption(p);
+      if (!e.loading) e.loading = buildScene(p).then(sc => { e.sc = sc; anchor.group.add(sc.group); });  // carga al primer encuentro
+      await e.loading; e.sc.onShow();
+    };
+    anchor.onTargetLost = () => { e.visible = false; if (!live.some(x => x.visible)) caption(null, 'Buscando una ilustración…'); };
+  });
+  await mindar.start();
+  renderer.setAnimationLoop(() => {
+    const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
+    live.forEach(e => e.visible && e.sc?.update(t, dt));
+    renderer.render(scene, camera);
+  });
+}
+
+async function startPreview(first) {
+  const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  document.getElementById('ar').appendChild(renderer.domElement);
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x2a2a2e);
+  const camera = new THREE.PerspectiveCamera(38, innerWidth / innerHeight, .01, 50);
+  camera.up.set(0, 0, 1); camera.position.set(0, -1.9, 1.5);
+  const ctl = new OrbitControls(camera, renderer.domElement); ctl.target.set(0, 0, .15); ctl.update();
+  const holder = new THREE.Group(); scene.add(holder);
+  let cur = null;
+  const pick = document.getElementById('pick'); pick.hidden = false;
+  pages.forEach((p, i) => pick.add(new Option(p.chapter, i)));
+  async function show(i) {
+    pick.value = i; holder.clear(); cur = null; caption(pages[i]);
+    const tex = await new THREE.TextureLoader().loadAsync('targets/' + pages[i].target); tex.colorSpace = THREE.SRGBColorSpace;
+    holder.add(new THREE.Mesh(new THREE.PlaneGeometry(1, pages[i].aspect), new THREE.MeshBasicMaterial({ map: tex })));
+    const sc = await buildScene(pages[i]); holder.add(sc.group); sc.onShow(); cur = sc;
+  }
+  pick.onchange = () => show(+pick.value);
+  addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+  await show(first);
+  renderer.setAnimationLoop(() => { const dt = Math.min(clock.getDelta(), .05); cur?.update(clock.elapsedTime, dt); renderer.render(scene, camera); });
+  window.ready = true; window.show = show;
+}
+
+document.getElementById('start').onclick = async () => {
+  document.getElementById('intro').hidden = true;
+  try { await startAR(); } catch (e) { caption(null, 'No se pudo abrir la cámara: ' + e.message); }
+};
+const q = new URLSearchParams(location.search);
+if (q.has('preview')) { document.getElementById('intro').hidden = true; startPreview(Number(q.get('preview')) || 0); }
+</script>
+</body></html>

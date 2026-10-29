@@ -1,0 +1,15 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Compilar targets</title>
+<style>body{font:18px Georgia,serif;background:#efe6d2;color:#2a2a2e;display:grid;place-items:center;height:100vh;margin:0}#b{width:320px;height:14px;background:#0003;border-radius:7px;overflow:hidden}#f{height:100%;width:0;background:#c8402f}</style></head>
+<body><div><p id="m">Compilando las ilustraciones del libro…</p><div id="b"><div id="f"></div></div></div>
+<script type="module">
+import '../vendor/mindar/mindar-image.prod.js';
+const m=document.getElementById('m'),f=document.getElementById('f');
+try{
+const imgs=[];const pages=await (await fetch('../pages.json')).json();for(const p of pages){const im=new Image();im.src='../targets/'+p.target;await im.decode();imgs.push(im);}
+const c=new window.MINDAR.IMAGE.Compiler();
+await c.compileImageTargets(imgs,p=>{f.style.width=p.toFixed(0)+'%';document.title=p.toFixed(0)+'%'});
+const buf=await c.exportData();
+const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf]));a.download='targets.mind';document.body.appendChild(a);a.click();
+m.textContent='Listo: se descargó targets.mind';document.title='LISTO';
+}catch(e){m.textContent='Error: '+e.message;document.title='ERROR'}
+</script></body></html>
