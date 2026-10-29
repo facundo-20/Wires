@@ -43,6 +43,13 @@ export async function buildScene(page) {
     model.updateMatrixWorld(true);
   }
 
+  // Orientar el diorama como lo filmó la cámara de la película: el lector mira desde el borde inferior de la página
+  if (page.camFwd && page.layout !== 'arc') {
+    const [fx, , fz] = page.camFwd;
+    model.rotation.y = Math.atan2(fx, -fz);
+    model.updateMatrixWorld(true);
+  }
+
   // Decorado colgado de la pared (ventanas, lámparas): en el aire queda raro, se oculta
   const floorY = new THREE.Box3().setFromObject(model, true).min.y;
   model.traverse(o => {
@@ -53,8 +60,28 @@ export async function buildScene(page) {
   });
 
   // Medir la escena en su primer cuadro (con huesos) y entrarla en la página
-  const box = new THREE.Box3();
-  model.traverse(o => { if (o.isMesh && o.visible) box.expandByObject(o, true); });
+  // Encuadre: los personajes (mallas con piel) a lo largo de toda la animación; el decorado acompaña
+  const chars = new THREE.Box3(), all = new THREE.Box3();
+  for (let k = 0; k <= 8; k++) {            // muestrear 9 instantes de la animación
+    mixer.setTime(dur * k / 8); model.updateMatrixWorld(true);
+    model.traverse(o => {
+      if (!o.isMesh || !o.visible) return;
+      all.expandByObject(o, true);
+      if (o.isSkinnedMesh) chars.expandByObject(o, true);
+    });
+  }
+  mixer.setTime(0); model.updateMatrixWorld(true);
+  let box = all;
+  if (!chars.isEmpty()) {
+    const cs = chars.getSize(new THREE.Vector3()), cc = chars.getCenter(new THREE.Vector3());
+    const reach = Math.max(cs.x, cs.z, 1.2) * .5 + 1.2;   // hasta 1,2 m alrededor de los personajes
+    box = chars.clone();
+    model.traverse(o => {
+      if (!o.isMesh || o.isSkinnedMesh || !o.visible) return;
+      const b = new THREE.Box3().setFromObject(o, true), c = b.getCenter(new THREE.Vector3());
+      if (Math.hypot(c.x - cc.x, c.z - cc.z) > reach) o.visible = false; else box.union(b);
+    });
+  }
   const size = box.getSize(new THREE.Vector3()), ctr = box.getCenter(new THREE.Vector3());
   const footprint = Math.max(size.x, size.z, 1e-3);
   const s = Math.min(.82 / footprint, .55 / Math.max(size.y, 1e-3));
@@ -80,9 +107,15 @@ export async function buildScene(page) {
     onShow() { t0 = null; },
     update(t, dt) {
       if (t0 === null) t0 = t;
-      const k = Math.min(1, (t - t0) / .7), e = 1 - Math.pow(1 - k, 3);
-      stand.scale.setScalar(Math.max(e, .001));
-      mixer.setTime((t - t0) % dur);
+      const HOLD = 1.2, FADE = .35, cycle = dur + HOLD;
+      const lt = t - t0, n = Math.floor(lt / cycle), u = lt - n * cycle;
+      // entrada con rebote la primera vez; en cada vuelta, se encoge y vuelve a crecer
+      let sc = 1;
+      if (n === 0 && u < .7) { const k = u / .7; sc = 1 - Math.pow(1 - k, 3); }
+      else if (n > 0 && u < FADE) { const k = u / FADE; sc = .6 + .4 * (1 - Math.pow(1 - k, 3)); }
+      if (u > cycle - FADE) { const k = (cycle - u) / FADE; sc = .6 + .4 * k; }
+      stand.scale.setScalar(Math.max(sc, .001));
+      mixer.setTime(Math.min(u, dur - 1e-3));
     }
   };
 }

@@ -23,7 +23,12 @@
    "Y me reí."
   ],
   "aspect": 1.3006,
-  "target": "t1.jpg"
+  "target": "t1.jpg",
+  "camFwd": [
+   -0.1117,
+   -0.0197,
+   -0.9935
+  ]
  },
  {
   "chapter": "La reina",
@@ -37,7 +42,12 @@
    "que no le pedía permiso a nadie."
   ],
   "aspect": 1.3006,
-  "target": "t2.jpg"
+  "target": "t2.jpg",
+  "camFwd": [
+   -0.0646,
+   -0.0338,
+   -0.9973
+  ]
  },
  {
   "chapter": "La herencia",
@@ -51,7 +61,12 @@
    "Y ganaste."
   ],
   "aspect": 1.3006,
-  "target": "t3.jpg"
+  "target": "t3.jpg",
+  "camFwd": [
+   -0.362,
+   -0.1764,
+   -0.9153
+  ]
  },
  {
   "chapter": "Lo que les saqué",
@@ -65,7 +80,12 @@
    "son mejores que yo."
   ],
   "aspect": 1.3006,
-  "target": "t4.jpg"
+  "target": "t4.jpg",
+  "camFwd": [
+   -0.5934,
+   -0.1495,
+   -0.7909
+  ]
  },
  {
   "chapter": "Con poco y nada",
@@ -79,7 +99,12 @@
    "Y listo. Saldado."
   ],
   "aspect": 1.3006,
-  "target": "t5.jpg"
+  "target": "t5.jpg",
+  "camFwd": [
+   0.5903,
+   -0.1043,
+   -0.8004
+  ]
  },
  {
   "chapter": "Los hermanos",
@@ -93,7 +118,12 @@
    "La banda sigue."
   ],
   "aspect": 1.3006,
-  "target": "t6.jpg"
+  "target": "t6.jpg",
+  "camFwd": [
+   0.0,
+   -0.0642,
+   -0.9979
+  ]
  },
  {
   "chapter": "El fruto",
@@ -106,7 +136,12 @@
    "y reapareció en un pibe de cuatro años."
   ],
   "aspect": 1.3006,
-  "target": "t7.jpg"
+  "target": "t7.jpg",
+  "camFwd": [
+   -0.0621,
+   -0.1409,
+   -0.9881
+  ]
  },
  {
   "chapter": "Lo que no alcanza",
@@ -121,7 +156,12 @@
    "¿Cómo estás, en serio?"
   ],
   "aspect": 1.3006,
-  "target": "t8.jpg"
+  "target": "t8.jpg",
+  "camFwd": [
+   0.2612,
+   -0.1722,
+   -0.9498
+  ]
  },
  {
   "chapter": "Los fantasmas",
@@ -134,7 +174,12 @@
    "Y no pude terminarla."
   ],
   "aspect": 1.3006,
-  "target": "t9.jpg"
+  "target": "t9.jpg",
+  "camFwd": [
+   -0.02,
+   -0.0964,
+   -0.9951
+  ]
  },
  {
   "chapter": "La cuenta",
@@ -146,7 +191,12 @@
    "El que se baja antes no pierde menos. Pierde peor."
   ],
   "aspect": 1.3006,
-  "target": "t10.jpg"
+  "target": "t10.jpg",
+  "camFwd": [
+   -0.2087,
+   0.1942,
+   -0.9585
+  ]
  },
  {
   "chapter": "La mano",
@@ -159,7 +209,12 @@
    "Me salvó la mano un cirujano."
   ],
   "aspect": 1.3006,
-  "target": "t11.jpg"
+  "target": "t11.jpg",
+  "camFwd": [
+   0.1133,
+   -0.4045,
+   -0.9075
+  ]
  },
  {
   "chapter": "Por qué cuesta separarse de una mala junta. Perdón.",
@@ -173,7 +228,12 @@
    "Perdón, viejos. Tenían razón."
   ],
   "aspect": 1.3006,
-  "target": "t12.jpg"
+  "target": "t12.jpg",
+  "camFwd": [
+   -0.1527,
+   -0.0576,
+   -0.9866
+  ]
  },
  {
   "chapter": "El puente",
@@ -187,7 +247,12 @@
    "No les escribo para despedirlos. Los vi."
   ],
   "aspect": 1.3006,
-  "target": "t13.jpg"
+  "target": "t13.jpg",
+  "camFwd": [
+   -0.2988,
+   0.1802,
+   -0.9372
+  ]
  },
  {
   "chapter": "Los que siguen",
@@ -200,7 +265,12 @@
    "con los ojos de un chico de cinco años."
   ],
   "aspect": 1.3006,
-  "target": "t14.jpg"
+  "target": "t14.jpg",
+  "camFwd": [
+   -0.8829,
+   -0.0392,
+   -0.4679
+  ]
  },
  {
   "chapter": "Qué piñata ha explotado",
@@ -211,7 +281,12 @@
    "hay regalos por todos lados."
   ],
   "aspect": 1.3006,
-  "target": "t15.jpg"
+  "target": "t15.jpg",
+  "camFwd": [
+   -0.0392,
+   0.0807,
+   -0.996
+  ]
  },
  {
   "chapter": "Ella",
@@ -225,7 +300,12 @@
    "para todo lo que no alcanza."
   ],
   "aspect": 1.3006,
-  "target": "t16.jpg"
+  "target": "t16.jpg",
+  "camFwd": [
+   -0.078,
+   -0.0387,
+   -0.9962
+  ]
  },
  {
   "chapter": "Malay",
@@ -238,7 +318,12 @@
    "Les dice «te amo» a todos."
   ],
   "aspect": 1.3006,
-  "target": "t17.jpg"
+  "target": "t17.jpg",
+  "camFwd": [
+   -0.2504,
+   -0.0868,
+   -0.9642
+  ]
  },
  {
   "chapter": "La luchadora",
@@ -253,7 +338,12 @@
    "lo que ella no lloró."
   ],
   "aspect": 1.3006,
-  "target": "t18.jpg"
+  "target": "t18.jpg",
+  "camFwd": [
+   0.3444,
+   -0.1114,
+   -0.9322
+  ]
  },
  {
   "chapter": "Cuando te duela",
@@ -267,7 +357,12 @@
    "Sobre todo cuando no me veas."
   ],
   "aspect": 1.3006,
-  "target": "t19.jpg"
+  "target": "t19.jpg",
+  "camFwd": [
+   -0.0101,
+   -0.0141,
+   -0.9998
+  ]
  },
  {
   "chapter": "Mi lugar",
@@ -280,7 +375,12 @@
    "es la orilla."
   ],
   "aspect": 1.3006,
-  "target": "t20.jpg"
+  "target": "t20.jpg",
+  "camFwd": [
+   -0.0491,
+   -0.1269,
+   -0.9907
+  ]
  },
  {
   "chapter": "Las ideas",
@@ -295,7 +395,12 @@
    "Fea, incompleta, sin saber. La pongo."
   ],
   "aspect": 1.3006,
-  "target": "t21.jpg"
+  "target": "t21.jpg",
+  "camFwd": [
+   -0.0533,
+   -0.0149,
+   -0.9985
+  ]
  },
  {
   "chapter": "La mejor flor",
@@ -308,6 +413,11 @@
    "Y el viento, ya lo ves, contesta."
   ],
   "aspect": 1.3006,
-  "target": "t22.jpg"
+  "target": "t22.jpg",
+  "camFwd": [
+   -0.314,
+   -0.0302,
+   -0.9489
+  ]
  }
 ]
