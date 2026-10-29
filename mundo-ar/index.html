@@ -53,26 +53,65 @@ function caption(p, msg) {
   ln.textContent = p ? p.lines.slice(0, 3).join(' ') : msg;
 }
 
+// ---- giroscopio ----
+const gyro = { ok: false, a: 0, b: 0, g: 0 };
+const _e = new THREE.Euler(), _z = new THREE.Vector3(0, 0, 1), _q1 = new THREE.Quaternion(-Math.sqrt(.5), 0, 0, Math.sqrt(.5)), _q0 = new THREE.Quaternion();
+function gyroQ(q) {
+  const d = Math.PI / 180, orient = ((screen.orientation && screen.orientation.angle) || window.orientation || 0) * d;
+  _e.set(gyro.b * d, gyro.a * d, -gyro.g * d, 'YXZ'); q.setFromEuler(_e); q.multiply(_q1); q.multiply(_q0.setFromAxisAngle(_z, -orient));
+  return q;
+}
+async function startGyro() {
+  try { if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEvent.requestPermission) { if (await DeviceOrientationEvent.requestPermission() !== 'granted') return; } } catch (e) { return; }
+  addEventListener('deviceorientation', ev => { if (ev.alpha == null) return; gyro.a = ev.alpha; gyro.b = ev.beta; gyro.g = ev.gamma; gyro.ok = true; });
+}
+
 async function startAR() {
   const { MindARThree } = await import('mindar-image-three');
   const mindar = new MindARThree({ container: document.getElementById('ar'), imageTargetSrc: 'targets.mind', maxTrack: 1, uiScanning: 'no', uiLoading: 'yes', filterMinCF: 0.0001, filterBeta: 0.001 });
   const { renderer, scene, camera } = mindar;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   caption(null, 'Buscando una ilustración…');
-  const live = pages.map(() => ({ sc: null, loading: null, visible: false }));
+  // Cada escena vive en un "root" propio: copia la pose del ancla mientras se ve el dibujo
+  // y, si el dibujo sale de cuadro, se sostiene en el espacio con el giroscopio (KEEP segundos).
+  const KEEP = 12;
+  const live = pages.map(() => ({ sc: null, loading: null, tracking: false, lostAt: -1, root: null, last: new THREE.Matrix4(), q0: new THREE.Quaternion() }));
   pages.forEach((p, i) => {
     const anchor = mindar.addAnchor(i), e = live[i];
+    e.anchor = anchor;
+    e.root = new THREE.Group(); e.root.matrixAutoUpdate = false; e.root.visible = false; scene.add(e.root);
     anchor.onTargetFound = async () => {
-      e.visible = true; caption(p);
-      if (!e.loading) e.loading = buildScene(p).then(sc => { e.sc = sc; anchor.group.add(sc.group); });  // carga al primer encuentro
-      await e.loading; e.sc.onShow();
+      live.forEach(x => { if (x !== e) { x.lostAt = -1; x.root.visible = false; } });  // una página a la vez
+      e.tracking = true; e.lostAt = -1; caption(p);
+      const fresh = !e.loading;
+      if (!e.loading) e.loading = buildScene(p).then(sc => { e.sc = sc; e.root.add(sc.group); });  // carga al primer encuentro
+      await e.loading; if (fresh || !e.root.visible) e.sc.onShow();
     };
-    anchor.onTargetLost = () => { e.visible = false; if (!live.some(x => x.visible)) caption(null, 'Buscando una ilustración…'); };
+    anchor.onTargetLost = () => { e.tracking = false; e.lostAt = clock.elapsedTime; gyroQ(e.q0); };
   });
   await mindar.start();
+  const qNow = new THREE.Quaternion(), qDelta = new THREE.Quaternion(), mR = new THREE.Matrix4(), camLocal = new THREE.Vector3();
   renderer.setAnimationLoop(() => {
     const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
-    live.forEach(e => e.visible && e.sc?.update(t, dt));
+    let anyVisible = false;
+    live.forEach(e => {
+      if (!e.sc) return;
+      if (e.tracking) {
+        e.last.copy(e.anchor.group.matrix); e.root.matrix.copy(e.last); e.root.visible = true;
+      } else if (e.lostAt >= 0 && t - e.lostAt < KEEP && gyro.ok) {
+        gyroQ(qNow); qDelta.copy(qNow).invert().multiply(e.q0);          // giro del celular desde que se perdió
+        e.root.matrix.copy(mR.makeRotationFromQuaternion(qDelta).multiply(e.last)); e.root.visible = true;
+      } else if (e.lostAt >= 0 && t - e.lostAt < 1.5 && !gyro.ok) {
+        e.root.matrix.copy(e.last); e.root.visible = true;                 // sin giroscopio: aguanta un instante
+      } else e.root.visible = false;
+      if (e.root.visible) {
+        anyVisible = true;
+        e.root.matrixWorldNeedsUpdate = true; e.root.updateMatrixWorld(true);
+        camLocal.copy(camera.position); e.sc.group.worldToLocal(camLocal);
+        e.sc.update(t, dt, camLocal);
+      }
+    });
+    if (!anyVisible && !cap.hidden && ch.textContent) caption(null, 'Buscando una ilustración…');
     renderer.render(scene, camera);
   });
 }
@@ -100,12 +139,14 @@ async function startPreview(first) {
   pick.onchange = () => show(+pick.value);
   addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
   await show(first);
-  renderer.setAnimationLoop(() => { const dt = Math.min(clock.getDelta(), .05); cur?.update(clock.elapsedTime, dt); renderer.render(scene, camera); });
-  window.ready = true; window.show = show;
+  const camL = new THREE.Vector3();
+  renderer.setAnimationLoop(() => { const dt = Math.min(clock.getDelta(), .05); if (cur) { camL.copy(camera.position); cur.group.worldToLocal(camL); cur.update(clock.elapsedTime, dt, camL); } renderer.render(scene, camera); });
+  window.ready = true; window.cam = camera; window.ctl = ctl; window.show = show;
 }
 
 document.getElementById('start').onclick = async () => {
   document.getElementById('intro').hidden = true;
+  startGyro();
   try { await startAR(); } catch (e) { caption(null, 'No se pudo abrir la cámara: ' + e.message); }
 };
 const q = new URLSearchParams(location.search);

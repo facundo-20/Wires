@@ -90,8 +90,12 @@ export async function buildScene(page) {
   const holder = new THREE.Group(); holder.scale.setScalar(s);
   model.position.set(-ctr.x, -box.min.y, -ctr.z);
   holder.add(model); stand.add(holder);
-  stand.position.set(0, -page.aspect * .12, 0);
-  group.add(stand);
+  // "lean": inclina el diorama hacia el lector cuando mira desde arriba (efecto libro pop-up)
+  const lean = new THREE.Group();
+  lean.position.set(0, -page.aspect * .12, 0);
+  lean.add(stand);
+  group.add(lean);
+  const qTarget = new THREE.Quaternion(), axis = new THREE.Vector3();
 
   // sombra de contacto
   const c = document.createElement('canvas'); c.width = c.height = 128;
@@ -105,8 +109,17 @@ export async function buildScene(page) {
   return {
     group,
     onShow() { t0 = null; },
-    update(t, dt) {
+    update(t, dt, cam) {
       if (t0 === null) t0 = t;
+      if (cam) {   // cam = posición de la cámara en coordenadas de la página
+        const dx = cam.x - lean.position.x, dy = cam.y - lean.position.y, h = Math.hypot(dx, dy);
+        const alpha = Math.atan2(h, Math.max(cam.z, 1e-3));          // 0 = mirando desde arriba
+        const amt = alpha < 1.1 ? (1 - alpha / 1.1) * .84 : 0;     // hasta ~48°
+        const ux = h > .05 ? dx / h : 0, uy = h > .05 ? dy / h : -1; // hacia el lector (o el borde inferior)
+        axis.set(-uy, ux, 0).normalize();
+        qTarget.setFromAxisAngle(axis, amt);
+        lean.quaternion.slerp(qTarget, Math.min(1, dt * 4));
+      }
       const HOLD = 1.2, FADE = .35, cycle = dur + HOLD;
       const lt = t - t0, n = Math.floor(lt / cycle), u = lt - n * cycle;
       // entrada con rebote la primera vez; en cada vuelta, se encoge y vuelve a crecer
